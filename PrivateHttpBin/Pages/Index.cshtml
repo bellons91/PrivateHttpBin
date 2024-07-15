@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+Totale di @Model.AllRequests.Count richieste
+
+<section>
+    <div class="accordion" id="accordionExample">
+       
+        @foreach(var request in Model.AllRequests)
+        {
+            var id = Guid.NewGuid().ToString();
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="h2-@id">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="true" aria-controls="@id">
+                  @request.Method  @request.FullPath |    @request.RequestDate
+                </button>
+            </h2>
+                <div id="@id" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>This is the first item's accordion body.</strong>
+               
+                       @*  @foreach (var qsItem in request.Query.ToList())
+                        {
+                            <p>@qsItem.Key | @qsItem.Value</p>
+                        } *@
+
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+   
+
+</section>
