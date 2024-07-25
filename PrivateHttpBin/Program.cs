@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
@@ -84,18 +85,20 @@ namespace PrivateHttpBin
     public class RequestDetails
     {
         public DateTime RequestDate { get; }
-        public string Method { get; set; }
+        public string Method { get; }
         public IQueryCollection QueryStringItems { get; }
         public string FullPath { get; }
-        public Guid Id { get; set; }
+        public Guid Id { get; }
+        public ImmutableDictionary<string, StringValues> Headers { get; }
 
         public RequestDetails(HttpRequest request)
         {
-            RequestDate = DateTime.UtcNow;
+            RequestDate = DateTime.Now.ToLocalTime();
             Method = request.Method;
             QueryStringItems = request.Query;
             FullPath = request.GetEncodedPathAndQuery();
             Id = Guid.NewGuid();
+            Headers = request.Headers.ToImmutableDictionary();
         }
     }
 

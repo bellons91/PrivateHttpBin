@@ -22,10 +22,9 @@ namespace PrivateHttpBin.Pages
         {
             HttpRequestCollection collections = _cache.Get<HttpRequestCollection>("requests");
 
-
             this.AllRequests = collections?.GetRequests()?.AsReadOnly() ?? new List<RequestDetails>().AsReadOnly();
-
-
         }
+
+
     }
 }

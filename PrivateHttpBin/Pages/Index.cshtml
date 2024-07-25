@@ -1,4 +1,5 @@
 ﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -6,40 +7,55 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<div>
+    <a href="./clear" class="btn btn-danger btn-lg active" role="button"  >Clear cache</a>
+</div>
+
+
+ 
 
 Totale di @Model.AllRequests.Count richieste
 
 <section>
     <div class="accordion" id="accordionExample">
        
-        @foreach(var request in Model.AllRequests)
+        @foreach(RequestDetails request in Model.AllRequests)
         {
             var id = Guid.NewGuid().ToString();
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="true" aria-controls="@id">
-                  @request.Method  @request.FullPath |    @request.RequestDate
+              <span class="badge badge-primary" style="color:black">@request.Method</span>  
+              @request.FullPath |    @request.RequestDate
                 </button>
             </h2>
                 <div id="@id" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <strong>This is the first item's accordion body.</strong>
-               
-                       @*  @foreach (var qsItem in request.Query.ToList())
-                        {
-                            <p>@qsItem.Key | @qsItem.Value</p>
-                        } *@
+                        <h3>Headers</h3>
+                    <table class="headers">
+                          <thead>
+                            <tr>
+                              <th scope="col">Key</th>
+                              <th scope="col">Value(s)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          @foreach (var qsItem in request.Headers.ToList())
+                            {
+                                <tr>
+                                  <th scope="row">@qsItem.Key </th>
+                                  <td> @qsItem.Value</td>
+                                </tr>
 
+                            }
+                          </tbody>
+                        </table>
                 </div>
             </div>
         </div>
         }
-
     </div>
-   
-
 </section>
