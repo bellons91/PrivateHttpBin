@@ -16,7 +16,7 @@
 
  
 
-Totale di @Model.AllRequests.Count richieste
+There are @Model.AllRequests.Count requests
 
 <section>
     <div class="accordion" id="accordionExample">
@@ -28,7 +28,7 @@ Totale di @Model.AllRequests.Count richieste
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="@id">
-              <span class="badge badge-primary" style="color:black">@request.Method</span>  
+              <span class="badge badge-primary"  >@request.Method</span>  
               @request.FullPath |    @request.RequestDate
                 </button>
             </h2>
