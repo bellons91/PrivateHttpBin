@@ -10,7 +10,7 @@
 </div>
 
 <div>
-    <a href="./clear" class="btn btn-danger btn-lg active" role="button"  >Clear cache</a>
+    <a href="./clear" class="btn btn-danger btn-lg active" role="button">Clear cache</a>
 </div>
 
 
@@ -21,41 +21,47 @@ There are @Model.AllRequests.Count requests
 <section>
     <div class="accordion" id="accordionExample">
        
-        @foreach(RequestDetails request in Model.AllRequests)
+        @foreach (RequestDetails request in Model.AllRequests)
         {
             var id = "req-" + Guid.NewGuid().ToString();
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="@id">
-              <span class="badge badge-primary"  >@request.Method</span>  
-              @request.FullPath |    @request.RequestDate
-                </button>
-            </h2>
+                        <span class="badge badge-primary">@request.Method</span>
+                        @request.FullPath |    @request.RequestDate
+                    </button>
+                </h2>
                 <div id="@id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                        <h3>Headers</h3>
-                    <table class="headers">
-                          <thead>
-                            <tr>
-                              <th scope="col">Key</th>
-                              <th scope="col">Value(s)</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          @foreach (var qsItem in request.Headers.ToList())
-                            {
-                                <tr>
-                                  <th scope="row">@qsItem.Key </th>
-                                  <td> @qsItem.Value</td>
-                                </tr>
+                    <div class="accordion-body">
+                        <section>
+                            <h3>Headers</h3>
+                            <table class="headers">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Key</th>
+                                        <th scope="col">Value(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var qsItem in request.Headers.ToList())
+                                    {
+                                        <tr>
+                                            <th scope="row">@qsItem.Key </th>
+                                            <td> @qsItem.Value</td>
+                                        </tr>
 
-                            }
-                          </tbody>
-                        </table>
+                                    }
+                                </tbody>
+                            </table>
+                        </section>
+                        <section>
+                            <h3>Body</h3>
+                            LOREM IPSUM
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
         }
     </div>
 </section>
