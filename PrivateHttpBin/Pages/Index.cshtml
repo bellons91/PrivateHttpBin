@@ -23,16 +23,16 @@ Totale di @Model.AllRequests.Count richieste
        
         @foreach(RequestDetails request in Model.AllRequests)
         {
-            var id = Guid.NewGuid().ToString();
+            var id = "req-" + Guid.NewGuid().ToString();
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="true" aria-controls="@id">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="false" aria-controls="@id">
               <span class="badge badge-primary" style="color:black">@request.Method</span>  
               @request.FullPath |    @request.RequestDate
                 </button>
             </h2>
-                <div id="@id" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div id="@id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                         <h3>Headers</h3>
                     <table class="headers">
