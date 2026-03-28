@@ -2,28 +2,15 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
-
-<div>
-    <a href="./clear" class="btn btn-danger btn-lg active" role="button">Clear cache</a>
-</div>
-
-
- 
-
-Total of @Model.AllRequests.Count requests
 
 <section>
     <div class="accordion" id="accordionExample">
        
         @foreach (RequestDetails request in Model.AllRequests)
         {
-            var id = Guid.NewGuid().ToString();
+            var id = "request-"+ Guid.NewGuid().ToString();
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
@@ -81,5 +68,4 @@ Total of @Model.AllRequests.Count requests
         }
     </div>
 </section>
-
 
