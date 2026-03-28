@@ -2,28 +2,15 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
-
-<div>
-    <a href="./clear" class="btn btn-danger btn-lg active" role="button">Clear cache</a>
-</div>
-
-
- 
-
-Total of @Model.AllRequests.Count requests
 
 <section>
     <div class="accordion" id="accordionExample">
        
         @foreach (RequestDetails request in Model.AllRequests)
         {
-            var id = Guid.NewGuid().ToString();
+            var id = "request-"+ Guid.NewGuid().ToString();
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="h2-@id">
@@ -34,47 +21,51 @@ Total of @Model.AllRequests.Count requests
                 </h2>
                 <div id="@id" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <section>
-                            <h3>Headers</h3>
-                            <table class="headers">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Key</th>
-                                        <th scope="col">Value(s)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var qsItem in request.Headers.ToList())
-                                    {
+                        <ul class="nav nav-tabs" id="tabs-@id" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="headers-tab-@id" data-bs-toggle="tab" data-bs-target="#headers-@id" type="button" role="tab" aria-controls="headers-@id" aria-selected="false">Headers</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="body-tab-@id" data-bs-toggle="tab" data-bs-target="#body-@id" type="button" role="tab" aria-controls="body-@id" aria-selected="true">Body</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContent-@id">
+                            <div class="tab-pane fade pt-3" id="headers-@id" role="tabpanel" aria-labelledby="headers-tab-@id">
+                                <table class="headers">
+                                    <thead>
                                         <tr>
-                                            <th scope="row">@qsItem.Key </th>
-                                            <td> @qsItem.Value</td>
+                                            <th scope="col">Key</th>
+                                            <th scope="col">Value(s)</th>
                                         </tr>
-
-                                    }
-                                </tbody>
-                            </table>
-                        </section>
-
- 
-                        <section>
-                            <h3>Body</h3>
-                            @if (string.IsNullOrEmpty(request.Body))
-                            {
-                                <p>No body</p>
-                            }
-                            else
-                            {
-                                <p>
-                                    @request.Body
-                                </p>
-                            }
-                        </section>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var qsItem in request.Headers.ToList())
+                                        {
+                                            <tr>
+                                                <th scope="row">@qsItem.Key </th>
+                                                <td> @qsItem.Value</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade show active pt-3" id="body-@id" role="tabpanel" aria-labelledby="body-tab-@id">
+                                @if (string.IsNullOrEmpty(request.Body))
+                                {
+                                    <p>No body</p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        @request.Body
+                                    </p>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
 </section>
-
 
