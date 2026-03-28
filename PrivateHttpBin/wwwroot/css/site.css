@@ -154,6 +154,6 @@ table {
     }
 
     table tbody td {
-        overflow-x: scroll;
+        overflow-x: overlay;
         max-width: 300px;
     }

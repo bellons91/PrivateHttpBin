@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace PrivateHttpBin
 {
@@ -90,6 +91,7 @@ namespace PrivateHttpBin
         public string FullPath { get; }
         public Guid Id { get; }
         public ImmutableDictionary<string, StringValues> Headers { get; }
+        public string Body { get; }
 
         public RequestDetails(HttpRequest request)
         {
@@ -99,6 +101,20 @@ namespace PrivateHttpBin
             FullPath = request.GetEncodedPathAndQuery();
             Id = Guid.NewGuid();
             Headers = request.Headers.ToImmutableDictionary();
+            Body = ReadFromStreamAsync(request.Body, request.ContentType).GetAwaiter().GetResult();
+        }
+
+        private async Task<string> ReadFromStreamAsync(Stream body, string contentType)
+        {
+            if (body == null || !body.CanRead)
+            {
+                return string.Empty;
+            }
+
+            var streamReader = new StreamReader(body);
+            string stringContent = await streamReader.ReadToEndAsync();
+
+            return stringContent;
         }
     }
 
