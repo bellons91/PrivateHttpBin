@@ -54,6 +54,10 @@
                                 {
                                     <p>No body</p>
                                 }
+                                else if (request.IsJson)
+                                {
+                                    <pre><code>@request.Body</code></pre>
+                                }
                                 else
                                 {
                                     <p>
