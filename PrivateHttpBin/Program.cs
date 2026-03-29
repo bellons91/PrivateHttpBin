@@ -92,6 +92,7 @@ namespace PrivateHttpBin
         public Guid Id { get; }
         public ImmutableDictionary<string, StringValues> Headers { get; }
         public string Body { get; }
+        public bool IsJson { get; }
 
         public RequestDetails(HttpRequest request)
         {
@@ -101,7 +102,27 @@ namespace PrivateHttpBin
             FullPath = request.GetEncodedPathAndQuery();
             Id = Guid.NewGuid();
             Headers = request.Headers.ToImmutableDictionary();
-            Body = ReadFromStreamAsync(request.Body, request.ContentType).GetAwaiter().GetResult();
+            var rawBody = ReadFromStreamAsync(request.Body, request.ContentType).GetAwaiter().GetResult();
+            (Body, IsJson) = TryFormatAsJson(rawBody);
+        }
+
+        private static (string Body, bool IsJson) TryFormatAsJson(string rawBody)
+        {
+            if (string.IsNullOrEmpty(rawBody))
+            {
+                return (rawBody, false);
+            }
+
+            try
+            {
+                using var doc = JsonDocument.Parse(rawBody);
+                var formatted = JsonSerializer.Serialize(doc.RootElement, new JsonSerializerOptions { WriteIndented = true });
+                return (formatted, true);
+            }
+            catch (JsonException)
+            {
+                return (rawBody, false);
+            }
         }
 
         private async Task<string> ReadFromStreamAsync(Stream body, string contentType)
